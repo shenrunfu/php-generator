@@ -10,7 +10,7 @@ function generator()
 
 $gen = generator();
 
-// what the problem of this loping?
+// what is the problem of this loping?
 
 echo $gen->current() . PHP_EOL;
 
