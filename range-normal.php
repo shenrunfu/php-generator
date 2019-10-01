@@ -10,6 +10,7 @@ function normalWay()
 {
     $time = microtime(true);
     $counter = 0;
+
     foreach (range(0, 1000000) as $number) {
         $counter++;
     }
