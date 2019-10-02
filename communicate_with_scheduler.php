@@ -80,19 +80,9 @@ function task($max)
     }
 }
 
-function newTask(Generator $coroutine)
-{
-    return new SystemCall(
-        function (Task $task, Scheduler $scheduler) use ($coroutine) {
-            $task->setSendValue($scheduler->newTask($coroutine));
-            $scheduler->schedule($task);
-        }
-    );
-}
-
 $scheduler = new Scheduler;
 
-$scheduler->newTask(task(10));
-$scheduler->newTask(task(5));
+$scheduler->newTask(task(6));
+$scheduler->newTask(task(3));
 
 $scheduler->run();
