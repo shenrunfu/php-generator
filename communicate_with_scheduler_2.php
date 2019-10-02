@@ -83,6 +83,7 @@ class Scheduler
     }
 }
 
+// set the tid as next send value and reschedule the task
 function getTaskId()
 {
     return new SystemCall(function (Task $task, Scheduler $scheduler) {
@@ -113,6 +114,9 @@ function killTask($tid)
 
 function childTask()
 {
+    // uncomment to check the execution order
+    // echo "Child task before first yield" . PHP_EOL;
+
     $tid = (yield getTaskId());
     while (true) {
         echo "Child task $tid still alive!\n";
@@ -122,8 +126,16 @@ function childTask()
 
 function task()
 {
+    // send a system call to Scheduler to get the task of itself
+    // Scheduler would send taskId back its next scheduled call
     $tid = (yield getTaskId());
+
+    // send a system call to Scheduler that creates a task that carries the coroutine `childTask()`
+    // Scheduler would send the child task Id back in its next scheduled call
     $childTid = (yield newTask(childTask()));
+
+    // uncomment to check the execution order
+    // echo "Parent task: print child task Id $childTid" . PHP_EOL;
 
     for ($i = 1; $i <= 6; ++$i) {
         echo "Parent task $tid iteration $i.\n";
